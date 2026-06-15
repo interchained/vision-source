@@ -1,0 +1,11 @@
+{
+  "_comment": "Always-indexed addresses with friendly labels. These addresses get pre-loaded into Redis and have richer history retention than on-demand lookups. Edit this file and restart the backend to take effect.",
+  "_schema": {
+    "address": "string (bech32 itc1... or legacy)",
+    "label": "string (human-friendly name)",
+    "category": "treasury | exchange | dev | mining-pool | governance | bridge | other",
+    "description": "optional longer description",
+    "verified": "boolean (shown with verified badge)"
+  },
+  "wallets": []
+}

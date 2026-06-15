@@ -1,0 +1,19 @@
+{
+  "_comment": "Mining pool detection patterns. The pool detector scans the coinbase scriptSig (decoded as ASCII) for any of these substrings, AND optionally checks if the coinbase output address matches a known pool payout address.",
+  "_schema": {
+    "name": "string (pool display name)",
+    "url": "string (pool homepage)",
+    "color": "hex color for UI badge (#rrggbb)",
+    "tags": ["array of ASCII substrings to search for in coinbase scriptSig"],
+    "addresses": ["array of known coinbase output addresses for this pool"]
+  },
+  "pools": [
+    {
+      "name": "Solo",
+      "url": "",
+      "color": "#6b7280",
+      "tags": ["/Interchained Solo/", "/solo/"],
+      "addresses": []
+    }
+  ]
+}

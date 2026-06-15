@@ -1,0 +1,20 @@
+{
+  "name": "Interchained Vision",
+  "short_name": "Vision",
+  "description": "Real-time ITC blockchain explorer & ITSL token registry.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "any",
+  "background_color": "#050a14",
+  "theme_color": "#050a14",
+  "icons": [
+    { "src": "/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ],
+  "categories": ["finance", "utilities", "developer"],
+  "shortcuts": [
+    { "name": "Mempool", "url": "/mempool" },
+    { "name": "Tokens", "url": "/tokens" },
+    { "name": "Deploy", "url": "/deploy" }
+  ]
+}
