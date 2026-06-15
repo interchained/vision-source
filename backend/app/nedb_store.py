@@ -116,12 +116,21 @@ class NedbStore:
     # ── low-level HTTP helpers ───────────────────────────────────────────
 
     async def _query(self, nql: str) -> dict:
-        """Run an NQL query and return the raw response payload."""
+        """Run an NQL query and return the raw response payload.
+
+        Treats 400/404 as an empty result rather than raising — this keeps
+        the DualStore resilient when collections don't exist yet (e.g. while
+        the migrator is still populating nedbd for the first time).
+        """
         client = await self._get_client()
         resp = await client.post(
             f"/v1/databases/{self._db}/query",
             json={"nql": nql},
         )
+        if resp.status_code in (400, 404):
+            # Collection not found or NQL error on an empty collection —
+            # treat as empty result so DualStore falls back to SQLite.
+            return {"rows": [], "count": 0}
         resp.raise_for_status()
         return resp.json()
 
@@ -612,8 +621,17 @@ def get_db() -> NedbStore:
 
 
 async def init_db() -> "NedbStore":
-    """Explicitly open the NEDB connection (call during lifespan startup)."""
-    return await _ensure_store()
+    """Explicitly open the NEDB connection and ensure the database exists."""
+    store = await _ensure_store()
+    # Pre-create the database so the first query doesn't get a 404/400.
+    try:
+        client = await store._get_client()
+        r = await client.get(f"/v1/databases/{store._db}")
+        if r.status_code == 404:
+            await client.post("/v1/databases", json={"name": store._db})
+    except Exception:
+        pass  # non-fatal — queries will handle missing db gracefully
+    return store
 
 
 async def close_db() -> None:
