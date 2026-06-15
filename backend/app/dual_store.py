@@ -32,6 +32,7 @@ from typing import Any, List, Optional, Sequence, Tuple
 
 from .sqlite_store import SQLiteStore
 from .nedb_store import NedbStore
+from .config import settings
 
 logger = logging.getLogger(__name__)
 
@@ -69,7 +70,7 @@ class DualStore:
         logger.info("  DualStore ACTIVE")
         logger.info("  Reads : nedbd (sticky) → SQLite fallback")
         logger.info("  Writes: SQLite (sync) + nedbd (fire-and-forget)")
-        logger.info("  nedbd : %s  db=%s", nedb._base_url, nedb._db)
+        logger.info("  nedbd : %s  db=%s", settings.NEDB_URL, settings.NEDB_DB_NAME)
         logger.info("=" * 58)
 
     # ── Public stats ─────────────────────────────────────────────────────
